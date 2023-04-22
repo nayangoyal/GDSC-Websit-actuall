@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema  = mongoose.Schema;
 
-const pasteventSchema = new Schema({
+const eventSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -21,17 +21,22 @@ const pasteventSchema = new Schema({
         type: String,
         required: true
     },
-    speaker: {
+    domain: [{
+        type : String,
+        enum: ["WebDev", "AiMl", "AppDev", "AndroidDev"],
+        required: true
+    }],
+    speaker: [{
         type: String,
         
-    },
-    facilitator: {
+    }],
+    facilitator: [{
         type: String,
-    },
+    }]
 });
 
 
 
-const PastEvent = mongoose.model('PastEvent', pasteventSchema);
+const Event = mongoose.model('Event', eventSchema);
 
-module.exports = PastEvent;
+module.exports = Event;
