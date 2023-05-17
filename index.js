@@ -22,8 +22,10 @@ connection.once('open', ()=>{
 
 
 const eventsRouter = require('./routes/events');
+const projectsRouter = require('./routes/projects');
 
 app.use('/eventsg', eventsRouter);
+app.use('/projectsg', projectsRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

@@ -15,23 +15,29 @@ const eventSchema = new Schema({
         startDate: {type: String, required: true},
         startTime: {type: String, required: true},
         endDate: {type: String, required: true},
-        endTime: {type: String, required: true}
+        endTime: {type: String, required: true},
+        venue: {type: String}
+    },
+    photo: { //URL of picture
+        type: String
+    },
+    buttonlink : { //GDSC Community link (RSVP)
+        type: String
     },
     tenure: {
         type: String,
         required: true
     },
-    domain: [{
+    domains: [{
         type : String,
-        enum: ["WebDev", "AiMl", "AppDev", "AndroidDev"],
+        enum: ["WebDev", "AiMl", "AppDev", "GameDev"],
         required: true
     }],
-    speaker: [{
-        type: String,
-        
+    speakers: [{
+        type: String
     }],
-    facilitator: [{
-        type: String,
+    facilitators: [{
+        type: String
     }]
 });
 
