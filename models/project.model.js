@@ -30,6 +30,10 @@ const projectSchema = new Schema({
     //Project's Github Link
     type: String,
   },
+  tenure: {
+    type: String,
+    enum: ["2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024","2024-2025","2025-2026"]
+  },
   domains: [
     {
       type: String,
