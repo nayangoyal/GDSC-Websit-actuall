@@ -10,6 +10,13 @@ router.route("/").get(async (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+// http://localhost:8000/ourteam/gdsclead
+router.route("/gdsclead").get(async (req, res) => {
+  await OurTeam.find({position:"gdsclead"})
+    .then((ourteam) => res.json(ourteam))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 // http://localhost:8000/ourteam/
 router.route("/").post(async (req, res) => {
   try {
