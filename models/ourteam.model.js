@@ -6,54 +6,50 @@ const ourTeamSchema = new Schema({
     type: String,
     required: true,
   },
-  description: {
+  position: {
     type: String,
+    enum: ["core", "domainlead", "gdsclead", "2022-2023", "2023-2024","2024-2025","2025-2026"],
     required: true,
   },
-  timeline: {
-    day: { type: String, required: true },
-    // YYYY-MM-DD format
-    startDate: { type: String, required: true },
-    startTime: { type: String, required: true },
-    endDate: { type: String, required: true },
-    endTime: { type: String, required: true },
-    venue: { type: String },
-  },
   photo: {
-    //URL of picture
+    //URL of DP
     type: String,
   },
-  projectLink: {
-    //Deployed Project Link
+  linkedin: {
     type: String,
   },
-  github: {
-    //Project's Github Link
+  instagram: {
+    type: String,
+  },
+  email: {
     type: String,
   },
   tenure: {
     type: String,
-    enum: ["2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024","2024-2025","2025-2026"]
+    enum: ["2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024","2024-2025","2025-2026"],
+    required: true,
   },
-  domains: [
-    {
-      type: String,
-      enum: ["development", "creative", "management", "gamedev", "cp", "aiml"],
-      required: true,
-    },
-  ],
-  teamMentors: [
-    {
-      type: String,
-    },
-  ],
-  teamMembers: [
-    {
-      type: String,
-    },
-  ],
+  domain: {
+    type: String,
+    enum: ["development", "creative", "management", "gamedev", "cp", "aiml"],
+    required: true,
+  }  
+});
+
+const batchPicSchema = new Schema({
+  batchPhoto: {
+    //URL of pic
+    type: String,
+    required:true,
+  },
+  tenure: {
+    type: String,
+    enum: ["2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024","2024-2025","2025-2026"],
+    required: true,
+  }
 });
 
 const OurTeam = mongoose.model("OurTeam", ourTeamSchema);
+const BatchPic = mongoose.model("BatchPic", batchPicSchema);
 
-module.exports = OurTeam;
+module.exports = {OurTeam,BatchPic};

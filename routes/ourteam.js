@@ -1,76 +1,116 @@
 const router = require("express").Router();
-let OurTeam = require("../models/ourteam.model");
+let { OurTeam, BatchPic } = require("../models/ourteam.model");
 
-// http://localhost:8000/projects/all
-router.route("/all").get(async (req, res) => {
+//************************************OurTeamSchema************************************
+
+// http://localhost:8000/ourteam/
+router.route("/").get(async (req, res) => {
   await OurTeam.find()
-    .then((projects) => res.json(projects))
+    .then((ourteam) => res.json(ourteam))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-// http://localhost:8000/projects/
+// http://localhost:8000/ourteam/
 router.route("/").post(async (req, res) => {
   try {
     const {
       name,
-      description,
-      timeline,
+      position,
       photo,
-      projectLink,
-      github,
+      linkedin,
+      instagram,
+      email,
       tenure,
-      domains,
-      teamMentors,
-      teamMembers,
+      domain,
     } = req.body;
-    const newProject = new OurTeam({
+    const newOurTeam = new OurTeam({
       name,
-      description,
-      timeline,
+      position,
       photo,
-      projectLink,
-      github,
+      linkedin,
+      instagram,
+      email,
       tenure,
-      domains,
-      teamMentors,
-      teamMembers,
+      domain,
     });
 
-    await newProject.save();
+    await newOurTeam.save();
 
-    res.status(201).json(newProject);
+    res.status(201).json(newOurTeam);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// http://localhost:8000/projects/filter?domains=development,creative&&tenure=2021-2022
-// http://localhost:8000/projects/filter?domains=development
-// http://localhost:8000/projects/filter?tenure=2021-2022
-
+// http://localhost:8000/ourteam/filter?domain=development&&tenure=2021-2022
+// http://localhost:8000/ourteam/filter?domain=development
+// http://localhost:8000/ourteam/filter?tenure=2021-2022
 router.route("/filter").get(async (req, res) => {
-    try {
-      const { domains, tenure } = req.query; // Retrieve domains and tenure from the query parameters
-  
-      let filters = {}; // Create an empty object to store the filters
-  
-      // If domains are provided in the query, add the domain filter
-      if (domains) {
-        const domainArray = domains.split(","); // Split the domains string into an array
-        filters.domains = { $in: domainArray }; // Match projects with any of the provided domains
-      }
-  
-      // If tenure is provided in the query, add the tenure filter
-      if (tenure) {
-        filters.tenure = tenure; // Match projects with the specified tenure
-      }
-  
-      const filteredProjects = await OurTeam.find(filters);
-  
-      res.json(filteredProjects);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const { domain, tenure } = req.query; // Retrieve domain and tenure from the query parameters
+
+    let filters = {}; // Create an empty object to store the filters
+
+    // If domain is provided in the query, add the domain filter
+    if (domain) {
+      // Split the domains string into an array
+      filters.domain = domain; // Match ourteam with any of the provided domains
     }
-  });
+
+    // If tenure is provided in the query, add the tenure filter
+    if (tenure) {
+      filters.tenure = tenure; // Match ourteam with the specified tenure
+    }
+
+    const filteredProjects = await OurTeam.find(filters);
+
+    res.json(filteredProjects);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//************************************BatchPicSchema************************************
+
+// http://localhost:8000/ourteam/batchpic
+// http://localhost:8000/ourteam/batchpic?tenure=2021-2022
+router.route("/batchpic").get(async (req, res) => {
+  try {
+    const { tenure } = req.query; // Retrieve tenure from the query parameters
+
+    let filters = {}; // Create an empty object to store the filters
+
+    // If tenure is provided in the query, add the tenure filter
+    if (tenure) {
+      filters.tenure = tenure; // Match batchpic with the specified tenure
+    }
+
+    const filteredProjects = await BatchPic.find(filters);
+
+    res.json(filteredProjects);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// http://localhost:8000/ourteam/batchpic
+router.route("/batchpic").post(async (req, res) => {
+  try {
+    const {
+      batchPhoto,
+      tenure,
+    } = req.body;
+    const newBatchPic = new BatchPic({
+      batchPhoto,
+      tenure,
+    });
+
+    await newBatchPic.save();
+
+    res.status(201).json(newBatchPic);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
