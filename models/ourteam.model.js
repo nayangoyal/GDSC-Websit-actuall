@@ -46,6 +46,10 @@ const batchPicSchema = new Schema({
     type: String,
     enum: ["2019-2020", "2020-2021", "2021-2022", "2022-2023", "2023-2024","2024-2025","2025-2026"],
     required: true,
+  },
+  domain: {
+    type: String,
+    enum: ["development", "creative", "management", "gamedev", "cp", "aiml"],
   }
 });
 

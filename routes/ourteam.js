@@ -81,15 +81,20 @@ router.route("/filter").get(async (req, res) => {
 
 // http://localhost:8000/ourteam/batchpic
 // http://localhost:8000/ourteam/batchpic?tenure=2021-2022
+// http://localhost:8000/ourteam/batchpic?domain=gamedev
 router.route("/batchpic").get(async (req, res) => {
   try {
-    const { tenure } = req.query; // Retrieve tenure from the query parameters
+    const { tenure, domain } = req.query; // Retrieve tenure domain from the query parameters
 
     let filters = {}; // Create an empty object to store the filters
 
     // If tenure is provided in the query, add the tenure filter
     if (tenure) {
       filters.tenure = tenure; // Match batchpic with the specified tenure
+    }
+    // If domain is provided in the query, add the domain filter
+    if (domain) {
+      filters.domain = domain; // Match batchpic with the specified tenure
     }
 
     const filteredProjects = await BatchPic.find(filters);
@@ -106,10 +111,12 @@ router.route("/batchpic").post(async (req, res) => {
     const {
       batchPhoto,
       tenure,
+      domain
     } = req.body;
     const newBatchPic = new BatchPic({
       batchPhoto,
       tenure,
+      domain
     });
 
     await newBatchPic.save();
