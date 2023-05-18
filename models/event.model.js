@@ -12,6 +12,7 @@ const eventSchema = new Schema({
   },
   timeline: {
     day: { type: String, required: true },
+    // YYYY-MM-DD format
     startDate: { type: String, required: true },
     startTime: { type: String, required: true },
     endDate: { type: String, required: true },

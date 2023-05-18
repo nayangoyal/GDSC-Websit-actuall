@@ -45,7 +45,6 @@ router.route("/").post(async (req, res) => {
 // http://localhost:8000/events/filter?domains=development,creative&&tenure=2021-2022
 // http://localhost:8000/events/filter?domains=development
 // http://localhost:8000/events/filter?tenure=2021-2022
-
 router.route("/filter").get(async (req, res) => {
   try {
     const { domains, tenure } = req.query; // Retrieve domains and tenure from the query parameters
@@ -66,6 +65,19 @@ router.route("/filter").get(async (req, res) => {
     const filteredEvents = await Event.find(filters);
 
     res.json(filteredEvents);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// http://localhost:8000/events/latest
+router.route("/latest").get(async (req, res) => {
+  try {
+    const latestEvents = await Event.find()
+      .sort({ "timeline.startDate": -1 }) // Sort events in descending order based on the endDate
+      .limit(3); // Limit the results to 3 events
+
+    res.json(latestEvents);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
