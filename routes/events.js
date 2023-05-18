@@ -42,29 +42,33 @@ router.route("/").post(async (req, res) => {
   }
 });
 
-router.route("/").get(async (req, res) => {
-  // try {
-  //   const { year, domain } = req.query;
-  //   let filter = {};
+// http://localhost:8000/events/filter?domains=development,creative&&tenure=2021-2022
+// http://localhost:8000/events/filter?domains=development
+// http://localhost:8000/events/filter?tenure=2021-2022
 
-  //   if (year) {
-  //     filter.$and = [
-  //       { "timeline.startDate": { $gte: `${year}-03-01` } }, // Greater than or equal to start year
-  //       { "timeline.endDate": { $lte: `${parseInt(year) + 1}-03-01` } }, // Less than or equal to end year
-  //     ];
-  //   }
+router.route("/filter").get(async (req, res) => {
+  try {
+    const { domains, tenure } = req.query; // Retrieve domains and tenure from the query parameters
 
-  //   if (domain) {
-  //     const domains = domain.split(",");
-  //     filter.domain = { $in: domains };
-  //   }
+    let filters = {}; // Create an empty object to store the filters
 
-  //   const events = await Event.find(filter);
-  //   res.json(events);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: error.message });
-  // }
+    // If domains are provided in the query, add the domain filter
+    if (domains) {
+      const domainArray = domains.split(","); // Split the domains string into an array
+      filters.domains = { $in: domainArray }; // Match events with any of the provided domains
+    }
+
+    // If tenure is provided in the query, add the tenure filter
+    if (tenure) {
+      filters.tenure = tenure; // Match events with the specified tenure
+    }
+
+    const filteredEvents = await Event.find(filters);
+
+    res.json(filteredEvents);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;
